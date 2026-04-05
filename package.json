@@ -1,8 +1,18 @@
 {
-  "name": "3dfolio",
+  "name": "tapendra-3d-portfolio",
   "private": true,
   "version": "0.0.0",
+  "description": "Personal 3D developer portfolio for Tapendra Chaudhary built with React, Three.js, Vite, and Tailwind CSS.",
   "type": "module",
+  "author": "Tapendra Chaudhary <tapendrachy9761@gmail.com>",
+  "homepage": "https://tapendra-3d-portfolio.vercel.app",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/tapendra9104/3D-portfolio.git"
+  },
+  "bugs": {
+    "url": "https://github.com/tapendra9104/3D-portfolio/issues"
+  },
   "scripts": {
     "dev": "vite",
     "build": "vite build",
