@@ -3,6 +3,7 @@ import { motion } from "framer-motion";
 import emailjs from "@emailjs/browser";
 
 import { styles } from "../styles";
+import { personalInfo } from "../constants";
 import { EarthCanvas } from "./canvas";
 import { SectionWrapper } from "../hoc";
 import { slideIn } from "../utils/motion";
@@ -31,18 +32,35 @@ const Contact = () => {
     e.preventDefault();
     setLoading(true);
 
+    const serviceId = import.meta.env.VITE_APP_EMAILJS_SERVICE_ID;
+    const templateId = import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID;
+    const publicKey = import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY;
+
+    if (!serviceId || !templateId || !publicKey) {
+      const subject = encodeURIComponent(
+        `Portfolio inquiry from ${form.name || "Website visitor"}`
+      );
+      const body = encodeURIComponent(
+        `Name: ${form.name}\nEmail: ${form.email}\n\n${form.message}`
+      );
+
+      setLoading(false);
+      window.location.href = `mailto:${personalInfo.email}?subject=${subject}&body=${body}`;
+      return;
+    }
+
     emailjs
       .send(
-        import.meta.env.VITE_APP_EMAILJS_SERVICE_ID,
-        import.meta.env.VITE_APP_EMAILJS_TEMPLATE_ID,
+        serviceId,
+        templateId,
         {
           from_name: form.name,
-          to_name: "JavaScript Mastery",
+          to_name: personalInfo.name,
           from_email: form.email,
-          to_email: "sujata@jsmastery.pro",
+          to_email: personalInfo.email,
           message: form.message,
         },
-        import.meta.env.VITE_APP_EMAILJS_PUBLIC_KEY
+        publicKey
       )
       .then(
         () => {
@@ -74,6 +92,19 @@ const Contact = () => {
       >
         <p className={styles.sectionSubText}>Get in touch</p>
         <h3 className={styles.sectionHeadText}>Contact.</h3>
+        <div className='mt-4 flex flex-col gap-2 text-secondary text-[15px]'>
+          <a href={`mailto:${personalInfo.email}`} className='hover:text-white'>
+            {personalInfo.email}
+          </a>
+          <a
+            href={personalInfo.githubUrl}
+            target='_blank'
+            rel='noreferrer'
+            className='hover:text-white'
+          >
+            github.com/{personalInfo.githubUsername}
+          </a>
+        </div>
 
         <form
           ref={formRef}
